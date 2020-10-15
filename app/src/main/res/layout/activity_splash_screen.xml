@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="app.snapmate.facebook.SplashScreen"
+    android:background="@color/colorPrimary">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cd"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="7dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="7dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:elevation="15dp"
+            android:scaleType="center"
+            android:src="@mipmap/ic_launcher_foreground" />
+
+
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/appname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cd"
+        android:gravity="center"
+        android:textSize="26sp"
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"
+        android:text="SnapMate"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/appname"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"
+        android:text="Download Videos from Facebook"/>
+
+
+</RelativeLayout>

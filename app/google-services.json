@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "907254377480",
+    "firebase_url": "https://snapmate-a78e7.firebaseio.com",
+    "project_id": "snapmate-a78e7",
+    "storage_bucket": "snapmate-a78e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907254377480:android:a107ad15e48a4ffc4235bd",
+        "android_client_info": {
+          "package_name": "app.snapmate.facebook.video.downloader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907254377480-ei86n480bf1f1kdhi937tr7npfd5b73g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.snapmate.facebook.video.downloader",
+            "certificate_hash": "5a74205960af7fc0bc95bc45ea0824d30e73d2a3"
+          }
+        },
+        {
+          "client_id": "907254377480-il76qoerrmcj349ofumkcm53n37hqmpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU34I3F5TLLWk6xATsARQojL8YcvXTelk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907254377480-il76qoerrmcj349ofumkcm53n37hqmpb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbarRL">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbarmain"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentEnd="true"
+
+        android:elevation="4dp"
+        android:gravity="center_horizontal"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <!--    android:background="@color/colorPrimary"-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/MyActionBartheme.">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="50dp"
+                android:text="SnapMate"
+                android:textAlignment="center"
+                android:textColor="@android:color/tertiary_text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+</RelativeLayout>
+
+

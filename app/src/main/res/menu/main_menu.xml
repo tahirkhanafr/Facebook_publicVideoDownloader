@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+ >
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/homeicon"
+            android:title="Home"
+           />
+
+        <item
+            android:id="@+id/nav_MyDownloads"
+            android:icon="@drawable/downloadicon"
+            android:title="My Downloads" />
+
+
+        <item
+            android:id="@+id/nav_FollowUs"
+            android:icon="@drawable/facebookicon"
+            android:title="Follow Us" />
+
+    </group>
+
+        <item android:title="More">
+            <menu>
+                <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_HowToDownload"
+                    android:title="How To Download" />
+                <item
+                    android:id="@+id/nav_PrivacyPolicy"
+                    android:title="Privacy Policy" />
+                </group>
+            </menu>
+        </item>
+
+    /*----------------- testing-----------------*/
+<!--    <group android:checkableBehavior="single">-->
+
+<!--        <item-->
+<!--            android:id="@+id/rateus"-->
+<!--            android:title="Rate Us"-->
+<!--            android:icon="@drawable/rateusicon"/>-->
+<!--        <item-->
+<!--            android:id="@+id/share"-->
+<!--            android:title="Share"-->
+<!--            android:icon="@drawable/shareicon"/>-->
+<!--    </group>-->
+
+
+</menu>

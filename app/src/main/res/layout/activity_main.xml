@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="app.snapmate.facebook.MainActivity"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    android:orientation="vertical">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/main_menu"
+        app:itemIconPadding="12dp"
+        app:itemTextColor="@drawable/selector_bottombar_text"
+        app:itemIconTint="@drawable/selector_bottombar_text"
+        >
+<!--        app:itemBackground="@drawable/drawer_selected_item">-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/Rateus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:text="Rate Us"
+                android:textAllCaps="false"
+                android:drawableTop="@drawable/rateusicon"></Button>
+            <Button
+                android:id="@+id/Share"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:text="Share"
+                android:drawableTop="@drawable/shareicon"></Button>
+        </LinearLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <include layout="@layout/toolbar"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/toolbarRL"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/instantdownloadicon"
+                    android:layout_marginEnd="5dp"></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Enable Instant Download:"
+                    android:textSize="18sp"
+                    android:textColor="#c0c0c0"></TextView>
+
+                <Switch
+                    android:id="@+id/switchh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </Switch>
+
+                <ImageView
+                    android:id="@+id/info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/buttonhelp">
+
+                </ImageView>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview2"
+            android:layout_width="match_parent"
+                android:layout_height="50dp"
+            android:layout_below="@+id/cardview1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <EditText
+                    android:id="@+id/edcopyurl"
+                    android:layout_width="275dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:hint="Paste Facebook Video URL "
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:paddingLeft="20dp"
+                    android:background="@android:color/transparent"
+                    android:textSize="18sp"></EditText>
+
+                <ImageView
+                    android:id="@+id/dirctcopyurl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/copyimage"
+                    ></ImageView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+/*---------------------for Download button-------------------------------- */
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardbtn"
+            android:layout_width="290dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/cardview2"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="60dp"
+            app:cardCornerRadius="25dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            >
+
+            <LinearLayout
+                android:id="@+id/btnlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnDownload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:onClick="process"
+                    android:text="@string/DownloadButton"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cardbtn"
+            android:layout_marginTop="15dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        android:layout_gravity="center"
+                        android:max="100"
+                        android:padding="10dp"
+                        android:progress="45"
+                        android:progressTint="@color/colorPrimary"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:visibility="gone"
+                        android:textSize="25sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_check_circle_black_24dp"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id">
+        </com.google.android.gms.ads.AdView>
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

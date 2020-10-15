@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">SnapMate</string>
+    <string name="navigation_drawer_open">open navigation drawer</string>
+    <string name="navigation_drawer_close">close navigation drawer</string>
+    <string name="title_activity_mydownload">Mydownload</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Videos</string>
+    <string name="title_notifications">Photo</string>
+    <string name="title_activity_my_download">My Download</string>
+    <string name="url_error">enter a valid url</string>
+    <string name="download_start">Starting Download</string>
+    <string name="download_Complete">Downloaded</string>
+    <string name="download_failed">Download Field</string>
+    <string name="stop">Stop</string>
+    <string name="Gallery_name"> My Downloads</string>
+    <string name="DownloadButton">DOWNLOAD</string>
+    <string name="title_activity_howto_download_review">HowtoDownloadReview</string>
+    <string name="tab_text_1">First Method</string>
+    <string name="tab_text_2">Second Method</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    //ads banner id
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="Application_ID">ca-app-pub-3940256099942544~3347511713</string>
+
+
+</resources>
