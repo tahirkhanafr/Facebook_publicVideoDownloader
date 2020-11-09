@@ -17,10 +17,11 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:targetApi="q">
-        <activity android:name=".UpdateApp"></activity>
-        <activity android:name=".SplashScreen">
+        android:theme="@style/AppTheme">
+        <activity android:name=".UpdateApp"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SplashScreen"
+            android:screenOrientation="portrait">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
@@ -31,17 +32,20 @@
         <activity
             android:name=".HowtoDownloadReview"
             android:label="How to Download"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HowtoDownlaod10Q"
             android:label="How to Download"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".IntroActivity">
 
         </activity>
         <activity
             android:name=".RecievedDownload"
-            android:label="Save to Phone "
+            android:label="Save to Phone"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
         <meta-data
@@ -51,14 +55,17 @@
         <activity
             android:name=".PrivacyPolicy"
             android:label="Privacy Policy"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HowToDownload"
             android:label="How to Download"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".GalleryActivity"
             android:label="@string/Gallery_name"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".buyMeCoffee" />
 
@@ -74,10 +81,12 @@
 
         <activity
             android:name=".MyDownload"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_my_download" />
         <activity
             android:name=".MainActivity"
-            android:label="SnapMate"
+            android:label="Save to Phone"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -85,7 +94,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="www.facebook.com"
+                    android:host="*.facebook.com"
                     android:mimeType="text/*" />
             </intent-filter>
         </activity>

@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,8 +48,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.ashudevs.facebookurlextractor.FacebookExtractor;
-import com.ashudevs.facebookurlextractor.FacebookFile;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -67,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Switch aSwitch;
     private EditText editText, videourl;
     private Bitmap bitmap;
-    private Button btnDownload;
+    private View btnDownload;
     private  ImageView imageView, imginfo,iv;
     private ClipboardManager clipboardManager;
     private ClipData clipData;
@@ -405,16 +402,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (url.contains("fb.watch"))
         {
             readURL=url;
-            new FacebookExtractor(this, readURL, false) {
+            new FBVideoExtractor(this, readURL, false) {
                 @Override
                 protected void onExtractionComplete(FacebookFile facebookFile) {
-                    Log.e("TAG", "---------------------------------------");
-                    Log.e("TAG", "facebookFile AutherName :: " + facebookFile.getAuthor());
-                    Log.e("TAG", "facebookFile FileName :: " + facebookFile.getFilename());
-                    Log.e("TAG", "facebookFile Ext :: " + facebookFile.getExt());
-                    Log.e("TAG", "facebookFile SD :: " + facebookFile.getSdUrl());
-                    Log.e("TAG", "facebookFile HD :: " + facebookFile.getHdUrl());
-                    Log.e("TAG", "---------------------------------------");
+//                    Log.e("TAG", "---------------------------------------");
+//                    Log.e("TAG", "facebookFile AutherName :: " + facebookFile.getAuthor());
+//                    Log.e("TAG", "facebookFile FileName :: " + facebookFile.getFilename());
+//                    Log.e("TAG", "facebookFile Ext :: " + facebookFile.getExt());
+//                    Log.e("TAG", "facebookFile SD :: " + facebookFile.getSdUrl());
+//                    Log.e("TAG", "facebookFile HD :: " + facebookFile.getHdUrl());
+//                    Log.e("TAG", "---------------------------------------");
                     String SD = facebookFile.getSdUrl();
                     String HD = facebookFile.getHdUrl();
                     if (HD != null) {
@@ -423,8 +420,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         downloadPath = SD;
                     }
 
-                    System.out.println("SD url" + facebookFile.getSdUrl());
-                    System.out.println("HD url" + facebookFile.getHdUrl());
+                   // System.out.println("SD url" + facebookFile.getSdUrl());
+                   // System.out.println("HD url" + facebookFile.getHdUrl());
 
                     downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -456,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public void handleMessage(Message msg) {
                             if (msg.what == UPDATE_PROGRESS) {
                                 int downloadedbyte = msg.arg1;
-                                System.out.println("Crsh" + msg.arg1);
+                               // System.out.println("Crsh" + msg.arg1);
 
                                 int total = msg.arg2;
                                 //String status = downloaded+"/"+total;
@@ -464,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     int percentage = (int) ((downloadedbyte * 100L) / total);
                                     tvDownloadStatus.setText(percentage + "%");
                                 } catch (Exception e) {
-                                    System.out.println("Crsh" + e.getMessage());
+                                  //  System.out.println("Crsh" + e.getMessage());
                                 }
                             }
                             super.handleMessage(msg);
@@ -528,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 protected void onExtractionFail(Exception error) {
-                    Log.e("Error", "Error :: " + error.getMessage());
+                    //Log.e("Error", "Error :: " + error.getMessage());
                     TastyToast.makeText(MainActivity.this, "" + error.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     error.printStackTrace();
                 }
@@ -544,16 +541,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
                 /*-----------fcebook url ectractor----------*/
-                new FacebookExtractor(this, readURL, false) {
+                new FBVideoExtractor(this, readURL, false) {
                     @Override
                     protected void onExtractionComplete(FacebookFile facebookFile) {
-                        Log.e("TAG", "---------------------------------------");
-                        Log.e("TAG", "facebookFile AutherName :: " + facebookFile.getAuthor());
-                        Log.e("TAG", "facebookFile FileName :: " + facebookFile.getFilename());
-                        Log.e("TAG", "facebookFile Ext :: " + facebookFile.getExt());
-                        Log.e("TAG", "facebookFile SD :: " + facebookFile.getSdUrl());
-                        Log.e("TAG", "facebookFile HD :: " + facebookFile.getHdUrl());
-                        Log.e("TAG", "---------------------------------------");
+//                        Log.e("TAG", "---------------------------------------");
+//                        Log.e("TAG", "facebookFile AutherName :: " + facebookFile.getAuthor());
+//                        Log.e("TAG", "facebookFile FileName :: " + facebookFile.getFilename());
+//                        Log.e("TAG", "facebookFile Ext :: " + facebookFile.getExt());
+//                        Log.e("TAG", "facebookFile SD :: " + facebookFile.getSdUrl());
+//                        Log.e("TAG", "facebookFile HD :: " + facebookFile.getHdUrl());
+//                        Log.e("TAG", "---------------------------------------");
                         String SD = facebookFile.getSdUrl();
                         String HD = facebookFile.getHdUrl();
                         if (HD != null) {
@@ -562,8 +559,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             downloadPath = SD;
                         }
 
-                        System.out.println("SD url" + facebookFile.getSdUrl());
-                        System.out.println("HD url" + facebookFile.getHdUrl());
+                       // System.out.println("SD url" + facebookFile.getSdUrl());
+                       // System.out.println("HD url" + facebookFile.getHdUrl());
 
                         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -595,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             public void handleMessage(Message msg) {
                                 if (msg.what == UPDATE_PROGRESS) {
                                     int downloadedbyte = msg.arg1;
-                                    System.out.println("Crsh" + msg.arg1);
+                                   // System.out.println("Crsh" + msg.arg1);
 
                                     int total = msg.arg2;
                                     //String status = downloaded+"/"+total;
@@ -603,7 +600,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         int percentage = (int) ((downloadedbyte * 100L) / total);
                                         tvDownloadStatus.setText(percentage + "%");
                                     } catch (Exception e) {
-                                        System.out.println("Crsh" + e.getMessage());
+                                      //  System.out.println("Crsh" + e.getMessage());
                                     }
                                 }
                                 super.handleMessage(msg);
@@ -667,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     protected void onExtractionFail(Exception error) {
-                        Log.e("Error", "Error :: " + error.getMessage());
+                       // Log.e("Error", "Error :: " + error.getMessage());
                         TastyToast.makeText(MainActivity.this, "" + error.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR);
                         error.printStackTrace();
                     }

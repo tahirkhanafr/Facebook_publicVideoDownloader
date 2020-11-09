@@ -3,7 +3,6 @@ package app.snapmate.facebook;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.util.Log;
 
 public class MediaScannerWrapper implements
         MediaScannerConnection.MediaScannerConnectionClient {
@@ -28,7 +27,7 @@ public class MediaScannerWrapper implements
     // start the scan when scanner is ready
     public void onMediaScannerConnected() {
         mConnection.scanFile(mPath, mMimeType);
-        Log.w("MediaScannerWrapper", "media file scanned: " + mPath);
+        //Log.w("MediaScannerWrapper", "media file scanned: " + mPath);
     }
 
     public void onScanCompleted(String path, Uri uri) {

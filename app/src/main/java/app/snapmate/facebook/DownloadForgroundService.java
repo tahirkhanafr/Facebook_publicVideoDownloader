@@ -21,7 +21,6 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +34,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.ashudevs.facebookurlextractor.FacebookExtractor;
-import com.ashudevs.facebookurlextractor.FacebookFile;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.File;
@@ -110,7 +107,7 @@ public class DownloadForgroundService extends Service {
                     if(url.contains("story_fbid")) {
                         String result = url.substring(url.indexOf("story_fbid=") + 11, url.indexOf("&"));
                         readURL = "https://www.facebook.com/"+result;
-                        System.out.println("url checking"+ readURL);
+                       // System.out.println("url checking"+ readURL);
                     } else  {
                         readURL = url;
                     }
@@ -188,17 +185,17 @@ public class DownloadForgroundService extends Service {
 
     @SuppressLint("StaticFieldLeak")
     private void startdownload() {
-        new FacebookExtractor(this,readURL,false)
+        new FBVideoExtractor(this,readURL,false)
         {
             @Override
             protected void onExtractionComplete(FacebookFile facebookFile) {
-                Log.e("TAG","---------------------------------------");
-                Log.e("TAG","facebookFile AutherName :: "+facebookFile.getAuthor());
-                Log.e("TAG","facebookFile FileName :: "+facebookFile.getFilename());
-                Log.e("TAG","facebookFile Ext :: "+facebookFile.getExt());
-                Log.e("TAG","facebookFile SD :: "+facebookFile.getSdUrl());
-                Log.e("TAG","facebookFile HD :: "+facebookFile.getHdUrl());
-                Log.e("TAG","---------------------------------------");
+//                Log.e("TAG","---------------------------------------");
+//                Log.e("TAG","facebookFile AutherName :: "+facebookFile.getAuthor());
+//                Log.e("TAG","facebookFile FileName :: "+facebookFile.getFilename());
+//                Log.e("TAG","facebookFile Ext :: "+facebookFile.getExt());
+//                Log.e("TAG","facebookFile SD :: "+facebookFile.getSdUrl());
+//                Log.e("TAG","facebookFile HD :: "+facebookFile.getHdUrl());
+//                Log.e("TAG","---------------------------------------");
                 String SD = facebookFile.getSdUrl();
                 String HD = facebookFile.getHdUrl();
                 if (HD != null) {
@@ -207,8 +204,8 @@ public class DownloadForgroundService extends Service {
                     downloadPath = SD;
                 }
 
-                System.out.println("SD url" + facebookFile.getSdUrl());
-                System.out.println("HD url" + facebookFile.getHdUrl());
+               // System.out.println("SD url" + facebookFile.getSdUrl());
+               // System.out.println("HD url" + facebookFile.getHdUrl());
 
                 downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -252,7 +249,7 @@ public class DownloadForgroundService extends Service {
 
             @Override
             protected void onExtractionFail(Exception error) {
-                Log.e("Error", "Error :: " + error.getMessage());
+               // Log.e("Error", "Error :: " + error.getMessage());
                 TastyToast.makeText(DownloadForgroundService.this,""+error.getMessage(),TastyToast.LENGTH_LONG,TastyToast.ERROR);
                 error.printStackTrace();
             }

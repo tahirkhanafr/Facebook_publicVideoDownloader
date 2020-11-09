@@ -95,7 +95,7 @@ public class SplashScreen extends AppCompatActivity {
                             splashcsreen(); }
 
                     } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                       // System.out.println(e.getMessage());
                 }
             }else
                 Toast.makeText(SplashScreen.this,"Someting went wrong please try again",Toast.LENGTH_SHORT).show();

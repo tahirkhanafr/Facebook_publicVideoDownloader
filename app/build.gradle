@@ -18,7 +18,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -51,9 +52,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-    implementation 'com.karumi:dexter:6.2.0'
 
-    implementation 'de.hdodenhof:circleimageview:2.1.0'
     //teasty toast
     implementation 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
@@ -67,9 +66,5 @@ dependencies {
     //
     implementation 'commons-codec:commons-codec:1.14'
     implementation 'commons-io:commons-io:2.6'
-
-
-    //facebook url extractor
-    implementation 'com.github.Ashusolanki:FacebookUrlExtractor:0.0.5'
 
 }

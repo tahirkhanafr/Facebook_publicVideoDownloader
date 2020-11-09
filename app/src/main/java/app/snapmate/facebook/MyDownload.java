@@ -11,7 +11,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import app.snapmate.facebook.ui.dashboard.DashboardFragment;
-import app.snapmate.facebook.ui.notifications.NotificationsFragment;
 
 public class MyDownload extends AppCompatActivity {
 
@@ -39,9 +38,6 @@ public class MyDownload extends AppCompatActivity {
                     switch (item.getItemId()){
                         case R.id.navigation_dashboard:
                             selectedFragment= new DashboardFragment();
-                            break;
-                        case  R.id.navigation_notifications:
-                            selectedFragment=new NotificationsFragment();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,selectedFragment).commit();

@@ -155,42 +155,48 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-/*---------------------for Download button-------------------------------- */
+/*-- for Download button-- */
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardbtn"
+            android:id="@+id/btnDownload"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="290dp"
             android:layout_height="45dp"
             android:layout_below="@+id/cardview2"
             android:layout_marginTop="15dp"
             android:layout_marginStart="60dp"
-            app:cardCornerRadius="25dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="process"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/colorPrimary"
-            >
+            app:cardCornerRadius="25dp">
 
             <LinearLayout
-                android:id="@+id/btnlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/btnDownload"
+                <TextView
+                    android:id="@+id/textView26"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:onClick="process"
+                    android:layout_height="wrap_content"
                     android:text="@string/DownloadButton"
-                    android:textColor="#fff"
-                    android:textSize="18sp" />
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cardbtn"
+            android:layout_below="@+id/btnDownload"
             android:layout_marginTop="15dp"
             >
 
@@ -240,8 +246,7 @@
             xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             ads:adSize="SMART_BANNER"
             ads:adUnitId="@string/banner_ad_unit_id">
