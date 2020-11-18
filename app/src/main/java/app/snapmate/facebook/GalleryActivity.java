@@ -1,9 +1,13 @@
 package app.snapmate.facebook;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,9 +26,13 @@ import com.bumptech.glide.Glide;
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class GalleryActivity extends AppCompatActivity {
 
@@ -43,14 +51,25 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       mContext=getApplicationContext();
+        mContext=getApplicationContext();
         gv = (GridView) findViewById(R.id.gridview);
-        File file= new File(Environment.getExternalStorageDirectory()+ "/Download/SnapMate" );
+
+        File file;
+
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
+            file= new File(Environment.getExternalStorageDirectory()+ "/Download/SnapMate" );
+
+        }
+        else{
+            file = new File(Environment.getExternalStorageDirectory() + "/Movies/");
+//            file = new File(getExternalFilesDir(Environment.DIRECTORY_MOVIES)+"/Movies/");
+        }
+
         if (file.isDirectory()){
             listFile=file.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
-                    return filename.contains(".mp4");
+                    return filename.contains("SnapMate-");
                 }
             });
             GridItem item;
@@ -92,16 +111,16 @@ public class GalleryActivity extends AppCompatActivity {
 //        gv.setOnItemClickListener(videogridlistener);
 //    }
 
-   private AdapterView.OnItemClickListener itemGridlistener=new AdapterView.OnItemClickListener() {
-       @Override
-       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-           String file=f.get(position);
-           Intent intent = new Intent(Intent.ACTION_VIEW);
-           intent.setDataAndType(Uri.parse(file), "video/mp4");
-           startActivity(intent);
+    private AdapterView.OnItemClickListener itemGridlistener=new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String file=f.get(position);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse(file), "video/mp4");
+            startActivity(intent);
 
-       }
-   };
+        }
+    };
 
     public class VideoAdapter extends BaseAdapter {
         private Context vContext;
@@ -134,11 +153,11 @@ public class GalleryActivity extends AppCompatActivity {
             listItemRow = LayoutInflater.from(vContext).inflate(R.layout.gridview, parent, false);
             if (convertView == null)
                 listItemRow = View.inflate(vContext, R.layout.gridview, null);
-                ImageView thumbImage = (ImageView) listItemRow.findViewById(R.id.icon);
+            ImageView thumbImage = (ImageView) listItemRow.findViewById(R.id.icon);
 
-                Glide.with(mContext)
-                        .load(getPicture(position))
-                        .into(thumbImage);
+            Glide.with(mContext)
+                    .load(getPicture(position))
+                    .into(thumbImage);
 //                thumbImage.setImageURI(Uri.parse(thumbPath));
 
             return listItemRow;
