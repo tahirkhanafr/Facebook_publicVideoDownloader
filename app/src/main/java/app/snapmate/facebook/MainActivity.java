@@ -10,6 +10,8 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,10 +23,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Message;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +52,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -54,6 +62,15 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,12 +94,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProgressBar pbLoading;
     CardView cardView1;
     private AdView mAdView;
-   private FirebaseAnalytics mFirebaseAnalytics;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private  OutputStream fos;
 
 
 
     String url;
-     private static final String TAG = "DownloadingExample";
+    private static final String TAG = "DownloadingExample";
     private String downloadPath;
     private long enq;
     private  DownloadManager downloadManager;
@@ -98,22 +116,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         progressBar = findViewById(R.id.progress_bar);
-      tvDownloadStatus = findViewById(R.id.tv_status);
-      iv=findViewById(R.id.iv);
+        tvDownloadStatus = findViewById(R.id.tv_status);
+        iv=findViewById(R.id.iv);
         mAdView = findViewById(R.id.adView);
-     // pbLoading=findViewById(R.id.pb_status);
+        // pbLoading=findViewById(R.id.pb_status);
 
         /*-----------Hide CardView For OS  Q 10----------*/
         cardView1=findViewById(R.id.cardview1);
-         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-             cardView1.setVisibility(View.GONE);
-         }
-         else {
-             cardView1.setVisibility(View.VISIBLE);
-         }
-         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            cardView1.setVisibility(View.GONE);
+        }
+        else {
+            cardView1.setVisibility(View.VISIBLE);
+        }
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
 
-         // Log.d(TAG, "Default value: " + mFirebaseRemoteConfig.getString(VERSION_CODE_KEY));
+        // Log.d(TAG, "Default value: " + mFirebaseRemoteConfig.getString(VERSION_CODE_KEY));
 
 //        /* -------------------ads Start-----------------------------*/
 
@@ -130,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        mAdView.loadAd(adRequest);
 
         /*-------------------- Hooks--------------*/
-/*------------------------shareIntent-------------*/
+        /*------------------------shareIntent-------------*/
         // getting the intent that started your app
         Intent myapp = getIntent();
         // getting the action associated with that intent
@@ -139,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        if(actionOfTheIntentThatStartedMyApp.equals(Intent.ACTION_SEND))
         if (Intent.ACTION_SEND.equals(actionOfTheIntentThatStartedMyApp)){
             Bundle extras = getIntent().getExtras();
-             sharelink = extras.getString(Intent.EXTRA_TEXT);
+            sharelink = extras.getString(Intent.EXTRA_TEXT);
         }
 
         /*--------------------fireBase Notification----------*/
@@ -186,18 +204,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ClipData.Item item = pData.getItemAt(0);
                 String txtpaste = item.getText().toString();
                 editText.setText(txtpaste);
-                }
+            }
         });
         imginfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 {
-                startActivity(new Intent(MainActivity.this,HowtoDownlaod10Q.class));
+                    startActivity(new Intent(MainActivity.this,HowtoDownlaod10Q.class));
                 }
                 else {
-                Intent intent=new Intent(MainActivity.this,HowtoDownloadReview.class);
-                startActivity(intent);
+                    Intent intent=new Intent(MainActivity.this,HowtoDownloadReview.class);
+                    startActivity(intent);
                 }
 
             }
@@ -252,9 +270,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Intent sharelink =new Intent(Intent.ACTION_SEND);
                     sharelink.setType("text/plain");
                     sharelink.putExtra(Intent.EXTRA_SUBJECT,"Share App");
-                    String shareMessage="https://play.google.com/store/apps/details?id="+ BuildConfig.APPLICATION_ID+"\n\n";
+                    String shareMessage="https://play.google.com/store/apps/details?id=app.snapmate.facebook.video.downloader\n\n";
                     sharelink.putExtra(Intent.EXTRA_TEXT,shareMessage);
-                     startActivity(Intent.createChooser(sharelink,"share by"));
+                    startActivity(Intent.createChooser(sharelink,"share by"));
                 }
                 catch (Exception e){
                     TastyToast.makeText(MainActivity.this,"Somthing went Wrong..",TastyToast.LENGTH_SHORT,TastyToast.ERROR);
@@ -356,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.btnDownload:
                 Uri uri = Uri.parse(editText.getText().toString());
                 //saveVideo();
-              startDownload();
+                startDownload();
                 break;
 
         }
@@ -393,12 +411,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(MainActivity.this, "grant storage permission and retry", Toast.LENGTH_LONG).show();
             return;
         }
-            //editText.setText(sharelink);
-            url = editText.getText().toString().trim();
-            if (TextUtils.isEmpty(url)) {
-                editText.setError(getString(R.string.url_error));
-                return;
-            }
+        //editText.setText(sharelink);
+        url = editText.getText().toString().trim();
+        if (TextUtils.isEmpty(url)) {
+            editText.setError(getString(R.string.url_error));
+            return;
+        }
         if (url.contains("fb.watch"))
         {
             readURL=url;
@@ -420,8 +438,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         downloadPath = SD;
                     }
 
-                   // System.out.println("SD url" + facebookFile.getSdUrl());
-                   // System.out.println("HD url" + facebookFile.getHdUrl());
+                    // System.out.println("SD url" + facebookFile.getSdUrl());
+                    // System.out.println("HD url" + facebookFile.getHdUrl());
 
                     downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -438,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     request1.allowScanningByMediaScanner();
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //                            request1.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
-                        request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
+                        request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES , "SnapMate-" + uri2.getLastPathSegment());
                     } else {
                         request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
                     }
@@ -453,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public void handleMessage(Message msg) {
                             if (msg.what == UPDATE_PROGRESS) {
                                 int downloadedbyte = msg.arg1;
-                               // System.out.println("Crsh" + msg.arg1);
+                                // System.out.println("Crsh" + msg.arg1);
 
                                 int total = msg.arg2;
                                 //String status = downloaded+"/"+total;
@@ -461,7 +479,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     int percentage = (int) ((downloadedbyte * 100L) / total);
                                     tvDownloadStatus.setText(percentage + "%");
                                 } catch (Exception e) {
-                                  //  System.out.println("Crsh" + e.getMessage());
+                                    //  System.out.println("Crsh" + e.getMessage());
                                 }
                             }
                             super.handleMessage(msg);
@@ -559,10 +577,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             downloadPath = SD;
                         }
 
-                       // System.out.println("SD url" + facebookFile.getSdUrl());
-                       // System.out.println("HD url" + facebookFile.getHdUrl());
+                        // System.out.println("SD url" + facebookFile.getSdUrl());
+                        // System.out.println("HD url" + facebookFile.getHdUrl());
 
                         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
 
                         Uri uri2 = Uri.parse(downloadPath);
                         DownloadManager.Request request1 = new DownloadManager.Request(uri2);
@@ -576,13 +595,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         request1.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                         request1.allowScanningByMediaScanner();
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                            FileOutputStream out;
+
+
+//                            ContentResolver contentResolver= getContentResolver();
+//                            ContentValues contentValues=new ContentValues();
+//                            contentValues.put(MediaStore.Downloads.DISPLAY_NAME,"SnapMate-" + uri2.getLastPathSegment());
+//                            contentValues.put(MediaStore.Downloads.MIME_TYPE,"video/mp4");
+//                            contentValues.put(MediaStore.Downloads.RELATIVE_PATH,Environment.DIRECTORY_DOWNLOADS);
+//                            Uri video= contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI,contentValues);
+//                            try {
+//                                 fos = contentResolver.openOutputStream(Objects.requireNonNull(video));
+//                            } catch (FileNotFoundException e) {
+//                                e.printStackTrace();
+//                            }
+
+//                            ContentValues valuesvideos;
+//                            valuesvideos = new ContentValues();
+//
+//                            valuesvideos.put(MediaStore.Video.Media.TITLE, "SnapMate-" + uri2.getLastPathSegment());
+//                            valuesvideos.put(MediaStore.Video.Media.DISPLAY_NAME, "SomeName");
+//                            valuesvideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+//                            valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 1);
+//                            ContentResolver resolver = getContentResolver();
+//                            Uri collection = MediaStore.Video.Media.getContentUri("external");
+////                            valuesvideos.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/" + "SnapMateho");
+//                            valuesvideos.put(MediaStore.Video.Media.RELATIVE_PATH, Environment.DIRECTORY_MOVIES+"/Snapmateeeee");
+//                            Uri uriSavedVideo = resolver.insert(collection, valuesvideos);
+
+
+//                            request1.setDestinationInExternalFilesDir(getApplicationContext(),out);
+//                            request1.allowScanningByMediaScanner();
 //                            request1.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
-                            request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
+                            request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES , "SnapMate-" + uri2.getLastPathSegment());
+
                         } else {
                             request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
                         }
                         enq = downloadManager.enqueue(request1);
                         registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+
 
 
                         final int UPDATE_PROGRESS = 5020;
@@ -592,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             public void handleMessage(Message msg) {
                                 if (msg.what == UPDATE_PROGRESS) {
                                     int downloadedbyte = msg.arg1;
-                                   // System.out.println("Crsh" + msg.arg1);
+                                    // System.out.println("Crsh" + msg.arg1);
 
                                     int total = msg.arg2;
                                     //String status = downloaded+"/"+total;
@@ -600,7 +653,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         int percentage = (int) ((downloadedbyte * 100L) / total);
                                         tvDownloadStatus.setText(percentage + "%");
                                     } catch (Exception e) {
-                                      //  System.out.println("Crsh" + e.getMessage());
+                                        //  System.out.println("Crsh" + e.getMessage());
                                     }
                                 }
                                 super.handleMessage(msg);
@@ -637,7 +690,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     BroadcastReceiver receiver = new BroadcastReceiver() {
                         @Override
-                        public void onReceive(Context context, Intent intent) {
+                        public void onReceive(Context context,Intent intent) {
                             String action = intent.getAction();
                             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                                 long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
@@ -648,7 +701,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 if (c.moveToFirst()) {
                                     int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
                                     if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
-                                        String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+
+
+//                                        String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+//                                        String title = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
+////                                        String destination="content://com.android.externalstorage.documents/document/primary%3ADownload"+"/Snapmate";
+//                                        String file="file:///storage/emulated/0/Android/data/app.snapmate.facebook.video.downloader/files/Download/SnapMate/";
+//                                        String file1="/storage/emulated/0/Android/data/app.snapmate.facebook.video.downloader/files/Download/SnapMate/";
+//                                        System.out.println("path"+ uriString);
+//                                         System.out.println("Title"+ title);
 
                                         TastyToast.makeText(MainActivity.this, "Download Successful", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                         progressBar.setVisibility(View.GONE);
@@ -657,14 +718,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                         //TODO : Use this local uri and launch intent to open file
                                     }
+
                                 }
                             }
+
                         }
                     };
 
                     @Override
                     protected void onExtractionFail(Exception error) {
-                       // Log.e("Error", "Error :: " + error.getMessage());
+                        // Log.e("Error", "Error :: " + error.getMessage());
                         TastyToast.makeText(MainActivity.this, "" + error.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR);
                         error.printStackTrace();
                     }
@@ -674,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 editText.setError("Please Enter Facebook Video Url");
             }
         }
-        }
+    }
 
     private boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -742,7 +805,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tvDownloadStatus.setText("0 %");
         iv.setVisibility(View.GONE);
 
-       // pbLoading.setVisibility(View.VISIBLE);
+        // pbLoading.setVisibility(View.VISIBLE);
     }
 
 }

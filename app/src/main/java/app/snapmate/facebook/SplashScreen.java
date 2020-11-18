@@ -31,14 +31,14 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-         //        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        //        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide(); //hide the title bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //this will bind your MainActivity.class file with activity_main.
         setContentView(R.layout.activity_splash_screen);
 
 
-/*------------------------Check Intro screen shared Preference------------------------*/
+        /*------------------------Check Intro screen shared Preference------------------------*/
         SharedPreferences getPrefs = PreferenceManager
                 .getDefaultSharedPreferences(getBaseContext());
 //  Create a new boolean and preference and set it to true
@@ -75,27 +75,27 @@ public class SplashScreen extends AppCompatActivity {
                 //calling function to check if new version is available or not
 //                    checkForUpdate();
 //                    private void checkForUpdate() {
-                    try {
-                        JSONObject obj = new JSONObject(mFirebaseRemoteConfig.getString("snapmate_setup_build_1"));
+                try {
+                    JSONObject obj = new JSONObject(mFirebaseRemoteConfig.getString("snapmate_setup_build_1"));
 
-                        int latestAppVersion = obj.getInt("current_version_code");
-                        String  message = obj.getString("message");
-                        String updateLink = obj.getString("updateLink");
-                        if (latestAppVersion > getCurrentVersionCode()) {
-                            Intent intent=new Intent(SplashScreen.this, UpdateApp.class);
-                            //Create the bundle
-                            Bundle bundle = new Bundle();
-                            //Add your data to bundle
-                            bundle.putString("message", message);
-                            bundle.putString("update",updateLink);
-                            //Add the bundle to the intent
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        } else {
-                            splashcsreen(); }
+                    int latestAppVersion = obj.getInt("current_version_code");
+                    String  message = obj.getString("message");
+                    String updateLink = obj.getString("updateLink");
+                    if (latestAppVersion > getCurrentVersionCode()) {
+                        Intent intent=new Intent(SplashScreen.this, UpdateApp.class);
+                        //Create the bundle
+                        Bundle bundle = new Bundle();
+                        //Add your data to bundle
+                        bundle.putString("message", message);
+                        bundle.putString("update",updateLink);
+                        //Add the bundle to the intent
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    } else {
+                        splashcsreen(); }
 
-                    } catch (Exception e) {
-                       // System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    // System.out.println(e.getMessage());
                 }
             }else
                 Toast.makeText(SplashScreen.this,"Someting went wrong please try again",Toast.LENGTH_SHORT).show();
@@ -164,7 +164,7 @@ public class SplashScreen extends AppCompatActivity {
         }
         return -1;
     }
-    }
+}
 
 
 
