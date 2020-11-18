@@ -1,10 +1,7 @@
 package app.snapmate.facebook;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -26,13 +23,9 @@ import com.bumptech.glide.Glide;
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class GalleryActivity extends AppCompatActivity {
 
@@ -61,8 +54,8 @@ public class GalleryActivity extends AppCompatActivity {
 
         }
         else{
-            file = new File(Environment.getExternalStorageDirectory() + "/Movies/");
-//            file = new File(getExternalFilesDir(Environment.DIRECTORY_MOVIES)+"/Movies/");
+            file = new File(Environment.getExternalStorageDirectory() + "/Download/");
+//            file = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)+"/Download/");
         }
 
         if (file.isDirectory()){

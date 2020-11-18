@@ -10,8 +10,6 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,14 +21,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Message;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,25 +45,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+//import com.google.android.gms.ads.AdView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sdsmdg.tastytoast.TastyToast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView tvDownloadStatus;
     private ProgressBar pbLoading;
     CardView cardView1;
-    private AdView mAdView;
+   // private AdView mAdView;
     private FirebaseAnalytics mFirebaseAnalytics;
     private  OutputStream fos;
 
@@ -118,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         progressBar = findViewById(R.id.progress_bar);
         tvDownloadStatus = findViewById(R.id.tv_status);
         iv=findViewById(R.id.iv);
-        mAdView = findViewById(R.id.adView);
+        //mAdView = findViewById(R.id.adView);
         // pbLoading=findViewById(R.id.pb_status);
 
         /*-----------Hide CardView For OS  Q 10----------*/
@@ -135,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //        /* -------------------ads Start-----------------------------*/
 
-        MobileAds.initialize(this, String.valueOf(R.string.Application_ID));
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+//        MobileAds.initialize(this, String.valueOf(R.string.Application_ID));
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
 //        MobileAds.initialize(this, new OnInitializationCompleteListener() {
 //            @Override
 //            public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -456,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     request1.allowScanningByMediaScanner();
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //                            request1.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
-                        request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES , "SnapMate-" + uri2.getLastPathSegment());
+                        request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS , "SnapMate-" + uri2.getLastPathSegment());
                     } else {
                         request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
                     }
@@ -619,15 +602,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                            valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 1);
 //                            ContentResolver resolver = getContentResolver();
 //                            Uri collection = MediaStore.Video.Media.getContentUri("external");
-////                            valuesvideos.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/" + "SnapMateho");
-//                            valuesvideos.put(MediaStore.Video.Media.RELATIVE_PATH, Environment.DIRECTORY_MOVIES+"/Snapmateeeee");
+////                            valuesvideos.put(MediaStore.Video.Media.RELATIVE_PATH, "DOWNLOADS/" + "SnapMateho");
+//                            valuesvideos.put(MediaStore.Video.Media.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS+"/Snapmateeeee");
 //                            Uri uriSavedVideo = resolver.insert(collection, valuesvideos);
 
 
 //                            request1.setDestinationInExternalFilesDir(getApplicationContext(),out);
 //                            request1.allowScanningByMediaScanner();
 //                            request1.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
-                            request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES , "SnapMate-" + uri2.getLastPathSegment());
+                            request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS , "SnapMate-" + uri2.getLastPathSegment());
 
                         } else {
                             request1.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/SnapMate", "SnapMate-" + uri2.getLastPathSegment());
