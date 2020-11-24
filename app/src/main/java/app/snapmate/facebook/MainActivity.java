@@ -194,7 +194,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String txtpaste = item.getText().toString();
                     editText.setText(txtpaste);
                 }
-                else { editText.setError(getString(R.string.url_empty));                }
+                else { editText.setError(getString(R.string.url_empty));
+                }
             }
         });
         imginfo.setOnClickListener(new View.OnClickListener() {
