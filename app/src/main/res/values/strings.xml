@@ -8,6 +8,7 @@
     <string name="title_notifications">Photo</string>
     <string name="title_activity_my_download">My Download</string>
     <string name="url_error">enter a valid url</string>
+    <string name="url_empty">Enter Url to download the video</string>
     <string name="download_start">Starting Download</string>
     <string name="download_Complete">Downloaded</string>
     <string name="download_failed">Download Field</string>

@@ -32,7 +32,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 //import com.google.android.gms.ads.AdView;
 import com.google.android.material.navigation.NavigationView;
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
    // private AdView mAdView;
     private FirebaseAnalytics mFirebaseAnalytics;
     private  OutputStream fos;
+    LinearLayout showuprelativeLayout;
 
 
 
@@ -100,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         progressBar = findViewById(R.id.progress_bar);
         tvDownloadStatus = findViewById(R.id.tv_status);
+        showuprelativeLayout=findViewById(R.id.popupRl);
         iv=findViewById(R.id.iv);
         //mAdView = findViewById(R.id.adView);
         // pbLoading=findViewById(R.id.pb_status);
@@ -184,9 +189,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
 
                 ClipData pData = clipboardManager.getPrimaryClip();
-                ClipData.Item item = pData.getItemAt(0);
-                String txtpaste = item.getText().toString();
-                editText.setText(txtpaste);
+                if (pData != null) {
+                    ClipData.Item item = pData.getItemAt(0);
+                    String txtpaste = item.getText().toString();
+                    editText.setText(txtpaste);
+                }
+                else { editText.setError(getString(R.string.url_empty));                }
             }
         });
         imginfo.setOnClickListener(new View.OnClickListener() {
@@ -429,6 +437,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Uri uri2 = Uri.parse(downloadPath);
                     DownloadManager.Request request1 = new DownloadManager.Request(uri2);
                     Toast.makeText(MainActivity.this, "Video is Downloading", Toast.LENGTH_SHORT).show();
+                    showuprelativeLayout.setVisibility(View.VISIBLE);
                     iv.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
                     tvDownloadStatus.setVisibility(View.VISIBLE);
@@ -569,6 +578,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Uri uri2 = Uri.parse(downloadPath);
                         DownloadManager.Request request1 = new DownloadManager.Request(uri2);
                         Toast.makeText(MainActivity.this, "Video is Downloading", Toast.LENGTH_SHORT).show();
+                        showuprelativeLayout.setVisibility(View.VISIBLE);
                         iv.setVisibility(View.GONE);
                         progressBar.setVisibility(View.VISIBLE);
                         tvDownloadStatus.setVisibility(View.VISIBLE);
@@ -789,6 +799,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         iv.setVisibility(View.GONE);
 
         // pbLoading.setVisibility(View.VISIBLE);
+        //working on git
     }
 
 }
