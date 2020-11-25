@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 else {
                     Intent intent=new Intent(MainActivity.this,HowtoDownloadReview.class);
                     startActivity(intent);
+
                 }
 
             }
