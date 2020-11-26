@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import org.json.JSONObject;
 
@@ -98,8 +99,11 @@ public class SplashScreen extends AppCompatActivity {
                     // System.out.println(e.getMessage());
                 }
             }else
-                Toast.makeText(SplashScreen.this,"Someting went wrong please try again",Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(SplashScreen.this,"Please Connect to the Internet ",TastyToast.ERROR,TastyToast.LENGTH_LONG).show();
+//                Toast.makeText(SplashScreen.this,"Someting went wrong please try again",Toast.LENGTH_SHORT).show();
         });
+
+
 //
 //        //This is default Map
 //        firebaseDefaultMap = new HashMap<>();
@@ -132,14 +136,6 @@ public class SplashScreen extends AppCompatActivity {
 //
 //       // Log.d(TAG, "Default value: " + mFirebaseRemoteConfig.getString(VERSION_CODE_KEY));
 
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent i=new Intent(SplashScreen.this, MainActivity.class);
-//                startActivity(i);
-//                finish();
-//            }
-//        }, SPLASH_SCREEN_TIME_OUT);
 
     }
 
