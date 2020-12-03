@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN_TIME_OUT=1000;
-    private FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+    private static final int SPLASH_SCREEN_TIME_OUT=1000;
+    private final FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     private HashMap<String,Object> firebaseDefaultMap;
     String VERSION_CODE_KEY  = "snapmate_setup_build_1";
 
