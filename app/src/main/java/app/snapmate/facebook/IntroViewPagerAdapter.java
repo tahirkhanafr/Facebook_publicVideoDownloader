@@ -43,7 +43,6 @@ public class IntroViewPagerAdapter extends PagerAdapter {
 
         // use Glade for Intro Screen to load Images
         Glide.with(mContext).load(mListScreen.get(position).getScreenImg()).into(imgSlide);
-
         container.addView(layoutScreen);
 
         return layoutScreen;
