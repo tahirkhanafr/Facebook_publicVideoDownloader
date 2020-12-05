@@ -1,16 +1,26 @@
 package app.snapmate.facebook;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.messaging.Constants;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -20,12 +30,15 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import static android.net.ConnectivityManager.TYPE_MOBILE;
+import static android.net.ConnectivityManager.TYPE_WIFI;
+
 public class SplashScreen extends AppCompatActivity {
 
-    private static final int SPLASH_SCREEN_TIME_OUT=1000;
+    private static final int SPLASH_SCREEN_TIME_OUT = 1000;
     private final FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-    private HashMap<String,Object> firebaseDefaultMap;
-    String VERSION_CODE_KEY  = "snapmate_setup_build_1";
+    private HashMap<String, Object> firebaseDefaultMap;
+    String VERSION_CODE_KEY = "snapmate_setup_build_1";
 
 
     @Override
@@ -34,9 +47,50 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         //        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide(); //hide the title bar
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //this will bind your MainActivity.class file with activity_main.
         setContentView(R.layout.activity_splash_screen);
+
+        boolean connected = Connectivity.isConnectedWifi(getApplicationContext());
+        boolean connectedmobiledata = Connectivity.isConnectedMobile(getApplicationContext());
+        if (connected) {
+            TastyToast.makeText(getApplicationContext(), "CONNECTED TO WIFI", TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
+        } else if (connectedmobiledata) {
+            TastyToast.makeText(getApplicationContext(), "CONNECTED TO MOBILE", TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
+
+        } else {
+
+            TastyToast.makeText(getApplicationContext(), "NOT CONNECTED PLZ CONNECT TO INTERNET", TastyToast.LENGTH_LONG, TastyToast.ERROR).show();
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+            //Setting message manually and performing action on button click
+            builder.setMessage("Please Connect to the Internet, Then Retry")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Toast.makeText(getApplicationContext(),"Please connect to WIFI or Mobile data Manually", Toast.LENGTH_LONG).show();
+                        }
+                    }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //  Action for 'NO' Button
+                    finish();
+                    dialog.cancel();
+
+                }
+            });
+            //Creating dialog box
+            AlertDialog alert = builder.create();
+            //Setting the title manually
+            alert.setTitle("Network Error ");
+            alert.show();
+            return;
+            }
+
+
+
+
+
 
 
         /*------------------------Check Intro screen shared Preference------------------------*/
@@ -80,26 +134,27 @@ public class SplashScreen extends AppCompatActivity {
                     JSONObject obj = new JSONObject(mFirebaseRemoteConfig.getString("snapmate_setup_build_1"));
 
                     int latestAppVersion = obj.getInt("current_version_code");
-                    String  message = obj.getString("message");
+                    String message = obj.getString("message");
                     String updateLink = obj.getString("updateLink");
                     if (latestAppVersion > getCurrentVersionCode()) {
-                        Intent intent=new Intent(SplashScreen.this, UpdateApp.class);
+                        Intent intent = new Intent(SplashScreen.this, UpdateApp.class);
                         //Create the bundle
                         Bundle bundle = new Bundle();
                         //Add your data to bundle
                         bundle.putString("message", message);
-                        bundle.putString("update",updateLink);
+                        bundle.putString("update", updateLink);
                         //Add the bundle to the intent
                         intent.putExtras(bundle);
                         startActivity(intent);
                     } else {
-                        splashcsreen(); }
+                        splashcsreen();
+                    }
 
                 } catch (Exception e) {
                     // System.out.println(e.getMessage());
                 }
-            }else
-                TastyToast.makeText(SplashScreen.this,"Please Connect to the Internet ",TastyToast.ERROR,TastyToast.LENGTH_LONG).show();
+            } else
+                TastyToast.makeText(SplashScreen.this, "Please Connect to the Internet ", TastyToast.ERROR, TastyToast.LENGTH_LONG).show();
 //                Toast.makeText(SplashScreen.this,"Someting went wrong please try again",Toast.LENGTH_SHORT).show();
         });
 
@@ -138,6 +193,10 @@ public class SplashScreen extends AppCompatActivity {
 
 
     }
+
+
+
+
 
     private void splashcsreen() {
         new Handler().postDelayed(new Runnable() {
